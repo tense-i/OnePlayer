@@ -13,10 +13,12 @@ LIBS +=$$PWD\vlc-3.0.9.2\sdk\lib\libvlccore.lib
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    cvlckits.cpp \
     main.cpp \
     widget.cpp
 
 HEADERS += \
+    cvlckits.h \
     widget.h
 
 FORMS += \

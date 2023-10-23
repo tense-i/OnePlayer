@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include "vlc/vlc.h"
+#include "cvlckits.h"
+#include <memory>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -11,19 +13,11 @@ QT_END_NAMESPACE
 class Widget : public QWidget
 {
     Q_OBJECT
-private:
-    libvlc_instance_t * m_pInstance=nullptr;
 
-    libvlc_media_player_t* m_pMediaPlayer = nullptr;
-    libvlc_media_t* m_pMedia = nullptr;
-    libvlc_event_manager_t*m_pEvent_manager=nullptr;
-    qint64 m_durations=0;
 public:
-    libvlc_media_player_t* media_player();
+
     void setTimeSliderPos(int value);
     void setSliderSoundPos(int val);
-    int getDurations();
-    void setLabtime(const QString & text);
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
@@ -41,5 +35,22 @@ private slots:
     void onSliderSoundMoved(int pos);
 private:
     Ui::Widget *ui;
+    std::unique_ptr<cVlcKits> m_pVlc;
+
+    // QWidget interface
+protected:
+    virtual void mouseDoubleClickEvent(QMouseEvent *event) override;
+
+    // QWidget interface
+protected:
+    virtual void keyPressEvent(QKeyEvent *event) override;
+
+    // QWidget interface
+protected:
+    virtual void mousePressEvent(QMouseEvent *event) override;
 };
+
+
+
+
 #endif // WIDGET_H
