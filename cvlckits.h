@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include "vlc/vlc.h"
+#include <vector>
+
 
 class cVlcKits:public QObject
 {
@@ -13,16 +15,25 @@ private:
     libvlc_media_player_t* m_pMediaPlayer = nullptr;
     libvlc_media_t* m_pMedia = nullptr;
     libvlc_event_manager_t*m_pEvent_manager=nullptr;
-    libvlc_time_t m_durations=0;
+    std::vector<libvlc_time_t> m_timeVector;
+    libvlc_media_list_player_t*m_pMediaPlayerList;
+    libvlc_media_list_t*m_pMediaList;
+    int curIndex=0;
+    libvlc_time_t curDuration=0;
 public:
-    libvlc_media_player_t* media_player();
-    libvlc_time_t getDurations();
+    libvlc_time_t getCurDuration()  const;
+    void setCurDuration(libvlc_time_t val);
+    int addCurindex();
+    int getCurIndex()const;
+    std::vector<libvlc_time_t> getTimeVector()const;
+    libvlc_media_player_t* media_player()const;
     void setSliderSoundPos(int val);
     void setLabTime(const QString & text);
 public:
     int initVLC();
     void setTimeSliderPos(int val);
-    int play(const QString& fileName,void* hwndd);
+
+    int play(const QStringList& fileNames,void* hwndd);
     void playing();
     void pause();
     void stop();

@@ -78,6 +78,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="btnOpen">
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
             <property name="text">
              <string>打开</string>
             </property>

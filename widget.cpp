@@ -8,16 +8,25 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <windows.h>
+#include <QFile>
+
+/*
+ * 回调函数
+ *
+ *
+ *
+ *
+ * */
 
 BOOL CALLBACK EnumVLC(HWND hwnd,LPARAM lParam)
 {
     TCHAR szTitle[1024];
-   int nLen= GetWindowTextW(hwnd,szTitle,1024);
+    int nLen= GetWindowTextW(hwnd,szTitle,1024);
     if(nLen>0)
-   {
-       EnableWindow(hwnd,FALSE);
+    {
+        EnableWindow(hwnd,FALSE);
         KillTimer(hwnd,1);
-   }
+    }
     return TRUE;
 }
 void  CALLBACK TimeProc(HWND hwnd, UINT msg, UINT_PTR id, DWORD time)
@@ -45,6 +54,7 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget),m_pVlc(new cVlcKits())
 {
     ui->setupUi(this);
+    InitQSS();
     this->setWindowTitle("vlcMain");
     int res=m_pVlc->initVLC();
     switch (res) {
@@ -58,9 +68,12 @@ Widget::Widget(QWidget *parent)
     //slider拖动，调用onTimeSliderMoved函数
     connect(ui->sliderTimeLen,&QSlider::sliderMoved,this,&Widget::onTimeSliderMoved);
     connect(ui->SliderVideoSound,&QSlider::sliderMoved,this,&Widget::onSliderSoundMoved);
+
+    //m_pVlc中的对象会发出信号 sig_setLabTime、由该槽函数解析
     connect(m_pVlc.get(),&cVlcKits::sig_setLabTime,[=](const QString & text){
         ui->labTime->setText(text);
     });
+   //m_pVlc中的对象会发出sig_setTimeSliderPos
     connect(m_pVlc.get(),&cVlcKits::sig_setTimeSliderPos,[=](const int& val){
         ui->sliderTimeLen->setValue(val);
     });
@@ -78,20 +91,18 @@ Widget::~Widget()
 
 void Widget::on_btnOpen_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, u8"请选择视频文件",
+    QStringList fileNameList = QFileDialog::getOpenFileNames(this, u8"请选择视频文件",
                                                     "D:/testvideo",
                                                     u8"视频文件(*.mp4 *.flv);;所有文件(*.*);;");
 
-    if (fileName.isEmpty())
+    if (fileNameList.isEmpty())
         return;
-
-    fileName = QDir::toNativeSeparators(fileName);  // 这一句很重要，决定m_pMedia是否创建成功
-    void* hwnd=(void*)ui->vadio_Widget->winId();
-    if( m_pVlc->play(fileName,hwnd)==-1)
-    {
-        QMessageBox::information(this,"提示","播放失败");
-        exit(EXIT_FAILURE);
-    }
+        void* hwnd=(void*)ui->vadio_Widget->winId();
+        if( m_pVlc->play(fileNameList,hwnd)==-1)
+        {
+            QMessageBox::information(this,"提示","播放失败");
+            exit(EXIT_FAILURE);
+        }
 
     SetTimer(nullptr,1,300,TimeProc);
 
@@ -158,5 +169,15 @@ void Widget::mousePressEvent(QMouseEvent *event)
             libvlc_media_player_pause(m_pVlc->media_player());
         }
     }
+}
 
+
+void Widget::InitQSS()
+{
+    QFile fileName=QFile(":/myqss.qss");
+    fileName.open(QFile::ReadOnly);
+    QString qss;
+    qss = fileName.readAll();
+    setStyleSheet(qss);
+    fileName.close();
 }

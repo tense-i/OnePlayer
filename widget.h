@@ -14,6 +14,8 @@ class Widget : public QWidget
 {
     Q_OBJECT
 
+private:
+    void InitQSS();
 public:
 
     void setTimeSliderPos(int value);
