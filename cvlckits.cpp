@@ -203,8 +203,6 @@ int cVlcKits::play(const QStringList &fileNames, void *hwndd)
     libvlc_media_list_player_set_media_player(m_pMediaPlayerList,m_pMediaPlayer);
     libvlc_media_player_set_hwnd(m_pMediaPlayer,hwndd);
     libvlc_media_list_player_play(m_pMediaPlayerList);
-
-
     return 0;
 }
 
