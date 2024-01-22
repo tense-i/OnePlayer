@@ -58,11 +58,12 @@ SendMessage(HWND(pWindow->winId()), WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
 
 默认情况下menu打开时的位置在父组件的下侧
 
-![image-20240119193448418](readme.assets/image-20240119193448418.png)
+![image](https://github.com/tense-i/OnePlayer/assets/119062015/5c756952-d486-4387-b414-d2f4a4925c65)
 
 通过重写EventFilter事件、可达到预期效果
 
-![image-20240119193806865](readme.assets/image-20240119193806865.png)
+![image](https://github.com/tense-i/OnePlayer/assets/119062015/632cb5fa-6dd0-4f0a-8c3f-2042658b19cc)
+
 
 
 
@@ -119,7 +120,7 @@ bool BtnOpenFile::eventFilter(QObject *watched, QEvent *event)
 
 ```
 
-![image-20240119201938131](readme.assets/image-20240119201938131.png)
+![image](https://github.com/tense-i/OnePlayer/assets/119062015/88219949-5ad0-44dc-8f3d-ac07bdc2ae3f)
 
 
 
@@ -187,7 +188,8 @@ LIBS +=$$PWD\vlc-3.0.9.2\sdk\lib\libvlc.lib
 LIBS +=$$PWD\vlc-3.0.9.2\sdk\lib\libvlccore.lib
 ```
 
-![image-20240122134725535](readme.assets/image-20240122134725535.png)
+![Uploading image.png…]()
+
 
 
 
@@ -296,7 +298,8 @@ error C2065: " libvlc_media_read_cb ":未声明的标识符
 libvlc_new执行失败
 解决办法，需要把libvlc的plugins放到可执行文件的目录
 
-![](readme.assets/image-20240122141308995.png)
+![image](https://github.com/tense-i/OnePlayer/assets/119062015/7ae7b5ad-7b16-4b2d-bbc9-4a44f570b647)
+
 
 ## 类图
 
